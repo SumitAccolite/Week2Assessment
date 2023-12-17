@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,38 +28,19 @@ public class ExcelReader {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
 
-                Cell dateCell = row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String date = dateCell != null ? dateCell.toString() : "";
+                DataModel dataModel = new DataModel();
 
-                Cell monthCell = row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String month = monthCell != null ? monthCell.toString() : "";
+                dataModel.setDate(getCellValue(row.getCell(0)));
+                dataModel.setMonth(getMonthCellValue(row.getCell(1)));
+                dataModel.setTeam(getCellValue(row.getCell(2)));
+                dataModel.setPanelName(getCellValue(row.getCell(3)));
+                dataModel.setRound(getCellValue(row.getCell(4)));
+                dataModel.setSkill(getCellValue(row.getCell(5)));
+                dataModel.setTime(getTimeCellValue(row.getCell(6)));
+                dataModel.setCandidateCurrentLoc(getCellValue(row.getCell(7)));
+                dataModel.setCandidatePreferredLoc(getCellValue(row.getCell(8)));
+                dataModel.setCandidateName(getCellValue(row.getCell(9)));
 
-                Cell teamCell = row.getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String team = teamCell != null ? teamCell.toString() : "Unknown Team";
-
-                Cell panelNameCell = row.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String panelName = panelNameCell != null ? panelNameCell.toString() : "";
-
-                Cell roundCell = row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String round = roundCell != null ? roundCell.toString() : "";
-
-                Cell skillCell = row.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String skill = skillCell != null ? skillCell.toString() : "";
-
-                Cell timeCell = row.getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String time = timeCell != null ? timeCell.toString() : "";
-
-                Cell candidateCurrentLocCell = row.getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String candidateCurrentLoc = candidateCurrentLocCell != null ? candidateCurrentLocCell.toString() : "";
-
-                Cell candidatePreferredLocCell = row.getCell(8, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String candidatePreferredLoc = candidatePreferredLocCell != null ? candidatePreferredLocCell.toString() : "";
-
-                Cell candidateNameCell = row.getCell(9, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String candidateName = candidateNameCell != null ? candidateNameCell.toString() : "";
-
-                // Create DataModel instance and add to the list
-                DataModel dataModel = new DataModel(date, month, team, panelName, round, skill, time, candidateCurrentLoc, candidatePreferredLoc, candidateName);
                 data.add(dataModel);
             }
         }
@@ -66,5 +48,43 @@ public class ExcelReader {
         return data;
     }
 
-    // Other methods (getCellValue, getNumericCellValue) remain the same as in the previous responses
+    private static String getCellValue(Cell cell) {
+        return cell != null ? cell.toString() : "";
+    }
+
+    private static String getMonthCellValue(Cell cell) {
+        if (cell != null) {
+            switch (cell.getCellType()) {
+                case STRING:
+                    return cell.getStringCellValue();
+                case NUMERIC:
+                    // Assuming the numeric value represents a date
+                    // Format the date as "MMM-yy" using SimpleDateFormat
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-yy");
+                    return dateFormat.format(cell.getDateCellValue());
+                default:
+                    return "Oct-23";
+            }
+        } else {
+            return "Nov-23";
+        }
+    }
+
+    private static String getTimeCellValue(Cell cell) {
+        if (cell != null) {
+            switch (cell.getCellType()) {
+                case STRING:
+                    return cell.getStringCellValue();
+                case NUMERIC:
+                    // Assuming the numeric value represents a date
+                    // Format the date as "hh:mm a" using SimpleDateFormat
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+                    return dateFormat.format(cell.getDateCellValue());
+                default:
+                    return "";
+            }
+        } else {
+            return "";
+        }
+    }
 }

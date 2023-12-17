@@ -14,12 +14,17 @@ public class Main {
 
             // Step 3: Insert data into the database
             DatabaseManager.insertData(data);
+            DatabaseManager.teamWithMaxInterviews();
+            DatabaseManager.teamWithMinInterviews();
+            DatabaseManager.top3Skills();
+            DatabaseManager.top3Panels();
+            DatabaseManager.skillsInPeakTime();
 
             // Step 4: Generate charts
             JFreeChart chart = ChartGenerator.createChart(data);
 
             // Step 5: Generate PDF and embed charts
-            PdfGenerator.generatePdf(data, "C:/Question2/Output.pdf");
+            PdfGenerator.generatePdf(data, "C:/Question2/Output/Output1.pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }

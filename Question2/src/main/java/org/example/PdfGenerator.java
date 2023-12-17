@@ -24,6 +24,7 @@ public class PdfGenerator {
             // Create JFreeChart
             JFreeChart chart = ChartGenerator.createChart(data);
 
+
             // Convert JFreeChart to BufferedImage
             int width = 600; // set width of the image
             int height = 400; // set height of the image
