@@ -1,0 +1,2 @@
+Inconsistent Annotations:
+Inconsistent annotations for class: AddClass.java

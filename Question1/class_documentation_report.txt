@@ -1,0 +1,2 @@
+Missing @ClassDocumentation:
+Missing @ClassDocumentation for class: AddClass.java

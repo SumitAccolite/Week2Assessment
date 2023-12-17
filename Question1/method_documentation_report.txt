@@ -1,0 +1,12 @@
+Missing @MethodDocumentation:
+Missing @MethodDocumentation for class: SubtractClass.java
+
+
+Methods without @MethodDocumentation:
+AddClass.java: addClass
+AddClass.java: println
+AddClass.java: add
+AddClass.java: printf
+SubtractClass.java: ClassDocumentation
+SubtractClass.java: myMethod
+SubtractClass.java: println
