@@ -1,5 +1,6 @@
-package org.example;// DatabaseManager.java
+package org.example;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.jfree.data.general.DefaultPieDataset;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class DatabaseManager {
     private static final String TABLE_NAME = "Accolite_Data"; // Table name to be created
 
     private static final BasicDataSource dataSource = new BasicDataSource();
+
 
     static {
         dataSource.setUrl(JDBC_URL);
@@ -65,15 +67,14 @@ public class DatabaseManager {
                 preparedStatement.setString(9, record.getCandidatePreferredLoc());
                 preparedStatement.setString(10, record.getCandidateName());
 
-                // Add other parameters as needed, ensuring to check for null values
 
                 // Execute the query
                 preparedStatement.executeUpdate();
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         });
     }
@@ -136,11 +137,13 @@ public class DatabaseManager {
                     "LIMIT 3;";
 
             ResultSet resultSet = statement.executeQuery(query);
-
+            DefaultPieDataset dataset = new DefaultPieDataset();
             while (resultSet.next()) {
+                dataset.setValue(resultSet.getString("panelName"), resultSet.getInt("interviewCount") );
                 System.out.println("Panel: " + resultSet.getString("panelName") +
                         ", Interview Count: " + resultSet.getInt("interviewCount"));
             }
+            PdfGenerator.createPanelPdf(dataset,"C:\\Question2\\Output\\Top3Panels.pdf");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,11 +166,13 @@ public class DatabaseManager {
             statement.executeUpdate(query);
             String Query2 = "SELECT * FROM top_skills_view;";
             ResultSet resultSet = statement.executeQuery(Query2);
-
+            DefaultPieDataset dataset = new DefaultPieDataset();
             while (resultSet.next()) {
+                dataset.setValue(resultSet.getString("skill"),resultSet.getInt("interviewCount"));
                 System.out.println("Skill: " + resultSet.getString("skill") +
                         ", Interview Count: " + resultSet.getInt("interviewCount"));
             }
+            PdfGenerator.createSkillsPdf(dataset,"C:\\Question2\\Output\\Top3Skills.pdf");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -194,7 +199,7 @@ public class DatabaseManager {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }

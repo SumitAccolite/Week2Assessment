@@ -1,4 +1,4 @@
-package org.example;// Main.java
+package org.example;
 import org.jfree.chart.JFreeChart;
 
 import java.util.List;

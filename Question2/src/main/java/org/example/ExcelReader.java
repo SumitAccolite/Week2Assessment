@@ -20,11 +20,11 @@ public class ExcelReader {
 
             Iterator<Row> rowIterator = sheet.iterator();
 
-            // Assuming the first row contains headers, skip it
+            // As the first row will contain column name skippinhg it
             if (rowIterator.hasNext()) {
                 rowIterator.next();
             }
-
+//started from 2nd row
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
 
@@ -76,8 +76,6 @@ public class ExcelReader {
                 case STRING:
                     return cell.getStringCellValue();
                 case NUMERIC:
-                    // Assuming the numeric value represents a date
-                    // Format the date as "hh:mm a" using SimpleDateFormat
                     SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
                     return dateFormat.format(cell.getDateCellValue());
                 default:
